@@ -1,0 +1,26 @@
+{
+  "name": "EmployeeCMS",
+  "version": "1.0.0",
+  "description": "CLI application to view, add and update employee data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kristincenters/EmployeeCMS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kristincenters/EmployeeCMS/issues"
+  },
+  "homepage": "https://github.com/kristincenters/EmployeeCMS#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^8.2.0",
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
