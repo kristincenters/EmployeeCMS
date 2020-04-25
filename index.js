@@ -5,7 +5,7 @@ const ConsoleTable = require('console.table');
 
 var connection = mysql.createConnection({
     host: process.env.HOST,
-    port: process.env.PORT
+    port: process.env.PORT,
     user: process.env.USER,
     password: process.env.PASS,
     database: process.env.DB
