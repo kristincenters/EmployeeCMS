@@ -8,7 +8,7 @@ VALUES
     ('Media'),
     ('Finance');
     
-    INSERT INTO `role`
+INSERT INTO `role`
     (title, salary, department_id)
 VALUES
     ('Account Executive', 100000, 1),
