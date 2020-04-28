@@ -20,7 +20,7 @@ CREATE TABLE position (
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 title VARCHAR (30),
 salary DECIMAL,
-department_id INT
+department_id VARCHAR (20)
 );
 INSERT INTO department (dept_name)
 VALUES
