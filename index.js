@@ -14,22 +14,22 @@ connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
     startApp();
-
 });
 function startApp() {
     inquirer
         .prompt({
             name: "action",
-            type: "rawlist",
+            type: "list",
             message: "Choose task:",
             choices: [
                 "View All Employees",
-                "View Employees by Role",
+                "View Employees by Position",
                 "View Employees by Department",
                 "Add New Employee",
                 "Update Employee Role",
                 "Update Employee Department",
                 "Update Employee Role",
+                "End Data Entry",
             ]
         })
         .then(function (answer) {
@@ -38,7 +38,7 @@ function startApp() {
                     employeeViewAll();
                     break;
 
-                case "View Employees by Role":
+                case "View Employees by Position":
                     employeeViewRole();
                     break;
 
@@ -48,14 +48,10 @@ function startApp() {
 
                 case "Add New Employee":
                     employeeAdd();
-                    break;
+                    break;;
 
-                case "Add Role to Employee":
-                    employeeAddRole();
-                    break;
-
-                case "Add Department to Employee":
-                    employeeAddDept();
+                case "Update Employee Department":
+                    employeeUpdateDept();
                     break;
 
                 case "Update Employee Role":
@@ -64,19 +60,14 @@ function startApp() {
                 case "End Data Entry":
                     connection.end();
                     console.log("Finished!")
-                    endApp();
-                    break;
-                default:
-                    break;
             }
-        })
+        });
 }
 function employeeViewAll() {
-    console.log("View all Employees\n");
+    console.log("View all Employees");
     connection.query("SELECT first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN (department, position) ON (department.id = employee.depart_id AND position.id = employee.id)", function (err, res) {
         if (err) throw err;
         console.table(res);
-        startApp();
     });
 }
 function employeeViewDept() {
@@ -100,12 +91,11 @@ function employeeViewDept() {
             else if (answer.views === "Finance") {
                 viewDeptFinance();
             } else {
-                connection.end();
+                return;
             }
         });
 }
 function viewDeptMedia() {
-    console.log();
     connection.query("SELECT employee.id, first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN(department, position) ON (department.id = employee.depart_id) AND position.id = employee.id WHERE employee.depart_id=3", function (err, res) {
         if (err) throw err;
         console.table(res);
@@ -113,7 +103,6 @@ function viewDeptMedia() {
     });
 }
 function viewDeptCreative() {
-    console.log();
     connection.query("SELECT employee.id, first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN(department, position) ON (department.id = employee.depart_id) AND position.id = employee.id WHERE employee.depart_id=2", function (err, res) {
         if (err) throw err;
         console.table(res);
@@ -121,7 +110,6 @@ function viewDeptCreative() {
     });
 }
 function viewDeptAccounts() {
-    console.log();
     connection.query("SELECT employee.id, first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN(department, position) ON (department.id = employee.depart_id) AND position.id = employee.id WHERE employee.depart_id=1", function (err, res) {
         if (err) throw err;
         console.table(res);
@@ -129,10 +117,35 @@ function viewDeptAccounts() {
     });
 }
 function viewDeptFinance() {
-    console.log();
     connection.query("SELECT employee.id, first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN(department, position) ON (department.id = employee.depart_id) AND position.id = employee.id WHERE employee.depart_id=4", function (err, res) {
         if (err) throw err;
         console.table(res);
         startApp();
     });
 }
+/*
+function employeeViewRole() {
+    connection.query = ("SELECT * FROM position", function (err, results) {
+        if (err) throw err;
+        inquirer
+            .prompt({
+                name: "choice",
+                type: "list",
+                choices: function () {
+                    var choiceArray = [];
+                    for (var i = 0; i < results.length; i++) {
+                        choiceArray.push(results[i].title);
+                    }
+                    return choiceArray;
+                },
+                message: "Select Position to View",
+            })
+            .then(function (answer) {
+                var chosenItem;
+                for (var i = 0; i < results.length; i++) {
+                    chosenItem = results[i];
+                }
+                console.table(res);
+            });
+    })
+}*/
