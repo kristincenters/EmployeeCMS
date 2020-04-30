@@ -46,28 +46,34 @@ function startApp() {
                     employeeViewDept();
                     break;
 
-                case "Add New Employee":
-                    employeeAdd();
-                    break;;
-
-                case "Update Employee Department":
-                    employeeUpdateDept();
+                case "Add Employee":
+                    addEmployee();
                     break;
 
-                case "Update Employee Role":
-                    employeeUpdateRole();
+                case "Update Employee":
+                    updateEmployee();
+                    break;
 
-                case "End Data Entry":
+                case "Add Department":
+                    addDept();
+                    break;
+
+                case "Add Position":
+                    addRole();
+
+                case "Exit App":
                     connection.end();
-                    console.log("Finished!")
+                    console.log("End")
             }
         });
 }
+
 function employeeViewAll() {
     console.log("View all Employees");
     connection.query("SELECT first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN (department, position) ON (department.id = employee.depart_id AND position.id = employee.id)", function (err, res) {
         if (err) throw err;
         console.table(res);
+        startApp()
     });
 }
 function employeeViewDept() {
@@ -123,29 +129,37 @@ function viewDeptFinance() {
         startApp();
     });
 }
-/*
 function employeeViewRole() {
-    connection.query = ("SELECT * FROM position", function (err, results) {
+    var results = []
+    var choiceArray = []
+
+    connection.query("SELECT * FROM position", function (err, data) {
         if (err) throw err;
+        for (var i = 0; i < data.length; i++) {
+            choiceArray.push(data[i].title);
+        }
+        //console.log(choiceArray)
         inquirer
-            .prompt({
-                name: "choice",
-                type: "list",
-                choices: function () {
-                    var choiceArray = [];
-                    for (var i = 0; i < results.length; i++) {
-                        choiceArray.push(results[i].title);
-                    }
-                    return choiceArray;
-                },
-                message: "Select Position to View",
-            })
-            .then(function (answer) {
-                var chosenItem;
-                for (var i = 0; i < results.length; i++) {
-                    chosenItem = results[i];
+            .prompt([
+                {
+                    name: "chooseRole",
+                    type: "list",
+                    choices: choiceArray,
+                    message: "Select Position to View",
                 }
-                console.table(res);
-            });
+            ])
+            .then(function (answer) {
+                var selection = answer.chooseRole;
+                connection.query("SELECT employee.id, first_name, last_name, title, dept_name, salary FROM employee LEFT JOIN(department, position) ON (department.id = employee.depart_id) AND position.id = employee.id WHERE title=?", [selection], function (err, res, fields) {
+                    if (err) throw err;
+                    startApp();
+                    console.table(res);
+
+
+
+                });
+
+            })
     })
-}*/
+
+}

@@ -22,3 +22,6 @@ title VARCHAR (30),
 salary DECIMAL,
 department_id VARCHAR (20)
 );
+SELECT * FROM employee;
+SELECT * FROM department;
+SELECT * FROM position;
